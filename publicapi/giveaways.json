@@ -1,16 +1,28 @@
 {
   "giveaways": [
     {
-      "GiveawayName": "Christmas Special",
-      "GiveawayPrize": "10000 Robux"
+      "GiveawayName": "4/14/2025",
+      "GiveawayPrize": "300 Robux"
     },
     {
-      "GiveawayName": "Easter Event",
-      "GiveawayPrize": "5000 Robux"
+      "GiveawayName": "4/10/2025",
+      "GiveawayPrize": "250 Robux"
     },
     {
-      "GiveawayName": "Summer Blast",
-      "GiveawayPrize": "Limited Item"
+      "GiveawayName": "4/6/2025",
+      "GiveawayPrize": "250 Robux"
+    },
+    {
+      "GiveawayName": "4/5/2025",
+      "GiveawayPrize": "250 Robux"
+    },
+    {
+      "GiveawayName": "4/2/2025",
+      "GiveawayPrize": "250 Robux"
+    },
+    {
+      "GiveawayName": "3/27/2025",
+      "GiveawayPrize": "300 Robux"
     }
   ]
 }
