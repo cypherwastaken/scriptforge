@@ -58,6 +58,7 @@ body {
   font-size: 5rem;
   font-weight: 800;
   margin-bottom: 1rem;
+  user-select: none;
   background: var(--text-gradient);
   -webkit-background-clip: text;
   background-clip: text;
