@@ -1,0 +1,16 @@
+{
+  "giveaways": [
+    {
+      "GiveawayName": "Christmas Special",
+      "GiveawayPrize": "10000 Robux"
+    },
+    {
+      "GiveawayName": "Easter Event",
+      "GiveawayPrize": "5000 Robux"
+    },
+    {
+      "GiveawayName": "Summer Blast",
+      "GiveawayPrize": "Limited Item"
+    }
+  ]
+}
