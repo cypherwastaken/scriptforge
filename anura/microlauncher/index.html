@@ -40,7 +40,7 @@
   insertIframe();
 }
 
-var confirmvar = await anura.dialog.confirm("Click OK to launch\nDevice: " + anura.platform.type, "Micro Launcher")
+var confirmvar = anura.dialog.confirm("Click OK to launch\nDevice: " + anura.platform.type, "Micro Launcher")
 if (confirmvar) {
 	createContainer();
 }
