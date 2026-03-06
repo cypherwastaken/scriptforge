@@ -1,10 +1,18 @@
 <title>MicroLauncher - AnuraOS</title>
+
 <script>
-  function createContainer() {
-  if (!parent.anura.wm || !parent.anura.wm.create) {
-    setTimeout(createContainer, 50);
-    return;
+
+function waitForAnura(callback) {
+
+  if (parent.anura && parent.anura.wm) {
+    callback();
+  } else {
+    setTimeout(() => waitForAnura(callback), 50);
   }
+
+}
+
+function createContainer() {
 
   const win = parent.anura.wm.createGeneric({
     title: "FrickGarett [MLauncher Injector]",
@@ -12,13 +20,15 @@
     height: 600
   });
 
-  async function insertIframe() {
+  function insertIframe() {
+
     if (!win.content) {
       setTimeout(insertIframe, 50);
       return;
     }
 
     const iframe = document.createElement("iframe");
+
     iframe.src = "https://frickgarett.vercel.app";
     iframe.style.width = "100%";
     iframe.style.height = "100%";
@@ -28,19 +38,35 @@
     win.content.appendChild(iframe);
 
     if (parent.anura.notifications) {
+
       parent.anura.notifications.add({
         title: "Micro Launcher",
-        description: "Container should have started"
+        description: "Container started successfully"
       });
+
     }
+
   }
 
   insertIframe();
+
 }
 
-var confirmvar = parent.anura.dialog.confirm("Click OK to launch\nDevice: " + anura.platform.type, "Micro Launcher")
-if (confirmvar) {
-	createContainer();
-}
+waitForAnura(() => {
+
+  const device = parent.anura?.platform?.type || "Unknown";
+
+  const confirmvar = parent.anura.dialog.confirm(
+    "Click OK to launch\nDevice: " + device,
+    "Micro Launcher"
+  );
+
+  if (confirmvar) {
+    createContainer();
+  }
+
+});
+
 </script>
+
 <p>MicroLauncher should start in your container</p>
