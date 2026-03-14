@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetterAnalysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #0b0f17;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+        .card {
+            max-width: 1100px;
+            width: 100%;
+            background: #131a2a;
+            border-radius: 2rem;
+            padding: 2rem 2rem 2.5rem;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.8), 0 0 0 1px rgba(66, 153, 225, 0.2);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #b3d0ff, #7aa9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            font-size: 0.9rem;
+            background: #1f2b40;
+            color: #9bb9ff;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            margin-left: 0.75rem;
+            font-weight: 450;
+            -webkit-text-fill-color: #9bb9ff;
+        }
+        .mode-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: #1a2438;
+            padding: 0.4rem;
+            border-radius: 3rem;
+        }
+        .mode-tab {
+            border: none;
+            background: transparent;
+            padding: 0.6rem 2rem;
+            border-radius: 3rem;
+            font-weight: 550;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #8b9dc9;
+        }
+        .mode-tab.active {
+            background: #2c3b58;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,20,40,0.5);
+        }
+        .input-panel {
+            background: #0f1625;
+            border-radius: 1.8rem;
+            padding: 2rem 2rem 2rem 2rem;
+            margin: 1.8rem 0 2rem;
+            border: 1px solid #253349;
+        }
+        .drop-area {
+            border: 2px dashed #31486c;
+            border-radius: 1.4rem;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            transition: 0.2s;
+            cursor: pointer;
+            background: #0c1220;
+        }
+        .drop-area:hover {
+            border-color: #5f8ad4;
+            background: #111b2d;
+        }
+        .drop-icon {
+            font-size: 2.4rem;
+            margin-bottom: 0.8rem;
+        }
+        .drop-text {
+            color: #b7c7e9;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        .drop-hint {
+            color: #5b6f93;
+            font-size: 0.9rem;
+        }
+        .file-name {
+            margin-top: 1rem;
+            color: #9bb9ff;
+            font-weight: 500;
+        }
+        textarea.script-box {
+            width: 100%;
+            background: #0c1220;
+            border: 2px solid #253349;
+            border-radius: 1.4rem;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #e0edff;
+            resize: none;
+            outline: none;
+        }
+        textarea.script-box:focus {
+            border-color: #5f8ad4;
+        }
+        .submit-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin: 1.8rem 0 2rem;
+        }
+        .check-btn {
+            background: #1f3b6b;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            padding: 1rem 3rem;
+            border-radius: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid #3c5e94;
+            letter-spacing: 0.3px;
+        }
+        .check-btn:hover {
+            background: #274883;
+            border-color: #6590d5;
+            transform: scale(1.02);
+        }
+        .check-btn:active {
+            transform: scale(0.98);
+        }
+        .result-area {
+            background: #0f172a;
+            border-radius: 1.8rem;
+            padding: 1.8rem;
+            border: 1px solid #293a57;
+        }
+        .score-badge {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            background: #192237;
+            padding: 1.2rem 2rem;
+            border-radius: 4rem;
+        }
+        .score-large {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #c7dcff;
+        }
+        .score-desc {
+            color: #99b5ec;
+            font-size: 1.2rem;
+        }
+        .urls-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .url-box {
+            background: #1b253f;
+            padding: 1rem 1.8rem;
+            border-radius: 2rem;
+            flex: 1 1 200px;
+        }
+        .url-box h4 {
+            color: #afc6ff;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .url-list {
+            list-style: none;
+        }
+        .url-list li {
+            color: white;
+            font-family: monospace;
+            font-size: 0.9rem;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #2f4062;
+            word-break: break-all;
+        }
+        .checks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem 1.2rem;
+            margin-top: 1.5rem;
+        }
+        .check-item {
+            background: #1a233b;
+            border-radius: 3rem;
+            padding: 0.5rem 1rem 0.5rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid #2f405f;
+        }
+        .check-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #0d1423;
+        }
+        .check-name {
+            color: #d1e0ff;
+            font-size: 0.9rem;
+            flex: 1;
+            text-transform: capitalize;
+        }
+        .status-pass {
+            color: #4ade80;
+        }
+        .status-fail {
+            color: #f87171;
+        }
+        .footnote {
+            margin-top: 1.5rem;
+            color: #50658b;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 1.2rem;
+            height: 1.2rem;
+            border: 3px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="logo">
+                <h1>BT‑Analysis <span>BetterAnalysis</span></h1>
+            </div>
+            <div class="mode-tabs" id="modeTabs">
+                <button class="mode-tab active" data-mode="file">File</button>
+                <button class="mode-tab" data-mode="script">Script</button>
+            </div>
+        </div>
+        <div class="input-panel" id="inputPanel"></div>
+
+        <div class="submit-footer">
+            <button class="check-btn" id="checkScriptBtn">
+                <span>🔍</span> Check Script
+            </button>
+        </div>
+
+        <div class="result-area hidden" id="resultArea"></div>
+    </div>
+
+    <script>
+        (function() {
+            let currentMode = 'file';         
+            let scriptContent = '';             
+            let fileNameDisplay = '';            
+            let analysisResult = null;           
+
+            const modeTabs = document.getElementById('modeTabs');
+            const inputPanel = document.getElementById('inputPanel');
+            const checkBtn = document.getElementById('checkScriptBtn');
+            const resultArea = document.getElementById('resultArea');
+
+            function getPassIcon() {
+                return `<svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+            }
+            function getFailIcon() {
+                return `<svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+            }
+
+            function renderInputPanel() {
+                if (currentMode === 'file') {
+                    inputPanel.innerHTML = `
+                        <div class="drop-area" id="dropArea">
+                            <div class="drop-icon">📂</div>
+                            <div class="drop-text">Drop your .js file here or click to browse</div>
+                            <div class="drop-hint">Only JavaScript files are accepted</div>
+                            <div class="file-name" id="fileNameDisplay"></div>
+                            <input type="file" id="fileInput" accept=".js,text/javascript" style="display: none;">
+                        </div>
+                    `;
+                    attachFileHandlers();
+                } else {
+                    inputPanel.innerHTML = `
+                        <textarea class="script-box" id="scriptTextArea" rows="8" placeholder="// paste your JavaScript code here ..."></textarea>
+                    `;
+                    const textarea = document.getElementById('scriptTextArea');
+                    if (textarea) {
+                        textarea.value = scriptContent;
+                        textarea.addEventListener('input', (e) => { scriptContent = e.target.value; });
+                    }
+                }
+            }
+
+            function attachFileHandlers() {
+                const dropArea = document.getElementById('dropArea');
+                const fileInput = document.getElementById('fileInput');
+                const fileNameSpan = document.getElementById('fileNameDisplay');
+                if (!dropArea || !fileInput) return;
+
+                const processFile = (file) => {
+                    if (file && (file.type.includes('javascript') || file.name.endsWith('.js') || file.type === '')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            scriptContent = e.target.result;
+                            fileNameDisplay = file.name;
+                            if (fileNameSpan) fileNameSpan.innerText = `📄 ${file.name}`;
+                        };
+                        reader.readAsText(file);
+                    } else {
+                        alert('Please select a valid .js file');
+                        fileInput.value = '';
+                    }
+                };
+
+                dropArea.addEventListener('click', () => fileInput.click());
+
+                dropArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropArea.style.borderColor = '#5f8ad4';
+                    dropArea.style.background = '#111b2d';
+                });
+                dropArea.addEventListener('dragleave', () => {
+                    dropArea.style.borderColor = '#31486c';
+                    dropArea.style.background = '#0c1220';
+                });
+                dropArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropArea.style.borderColor = '#31486c';
+                    dropArea.style.background = '#0c1220';
+                    const files = e.dataTransfer.files;
+                    if (files.length) processFile(files[0]);
+                });
+
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length) processFile(e.target.files[0]);
+                });
+
+                if (fileNameDisplay && fileNameSpan) {
+                    fileNameSpan.innerText = `📄 ${fileNameDisplay}`;
+                }
+            }
+
+            modeTabs.addEventListener('click', (e) => {
+                const tab = e.target.closest('.mode-tab');
+                if (!tab) return;
+                const mode = tab.dataset.mode;
+                if (mode === currentMode) return;
+
+                document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentMode = mode;
+
+                if (currentMode === 'file') {
+                    fileNameDisplay = '';
+                }
+                renderInputPanel();
+            });
+
+            async function submitScript() {
+                if (currentMode === 'script') {
+                    const textarea = document.getElementById('scriptTextArea');
+                    if (textarea) scriptContent = textarea.value;
+                } else {
+                    if (!scriptContent && currentMode === 'file') {
+                        alert('Please select a JavaScript file first.');
+                        return;
+                    }
+                }
+
+                if (!scriptContent || scriptContent.trim() === '') {
+                    alert('Script content is empty.');
+                    return;
+                }
+
+                checkBtn.disabled = true;
+                checkBtn.innerHTML = `<span class="loading-spinner"></span> analyzing...`;
+
+                try {
+                    const response = await fetch('https://btbackend-wine.vercel.app/api/scriptcheck', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ script: scriptContent })
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                    const data = await response.json();
+                    analysisResult = data;
+
+                    renderResults(data);
+                    resultArea.classList.remove('hidden');
+                } catch (err) {
+                    alert('Request failed: ' + err.message);
+                    console.error(err);
+                } finally {
+                    checkBtn.disabled = false;
+                    checkBtn.innerHTML = `🔍 Check Script`;
+                }
+            }
+
+            function renderResults(res) {
+                const passed = res.passed || false;
+                const score = res.score || '?/?';
+                const passedChecks = res.passedChecks ?? 0;
+                const totalChecks = res.totalChecks ?? 0;
+                const urlsFound = res.urlsFound || [];
+                const dependencies = res.dependencies || [];
+                const resultsMap = res.results || {};
+
+                const entries = Object.entries(resultsMap);
+
+                let checksHtml = '';
+                for (let [key, value] of entries) {
+                    const icon = value ? getPassIcon() : getFailIcon();
+                    const statusClass = value ? 'status-pass' : 'status-fail';
+                    checksHtml += `
+                        <div class="check-item">
+                            <div class="check-icon">${icon}</div>
+                            <span class="check-name">${key}</span>
+                            <span class="${statusClass}">${value ? 'passed' : 'failed'}</span>
+                        </div>
+                    `;
+                }
+
+                const urlsHtml = urlsFound.map(u => `<li>${escapeHtml(u)}</li>`).join('');
+                const depsHtml = dependencies.map(d => `<li>${escapeHtml(d)}</li>`).join('');
+
+                const overallIcon = passed ? getPassIcon() : getFailIcon();
+
+                const resultHtml = `
+                    <div class="score-badge">
+                        <span class="score-large">${score}</span>
+                        <span class="score-desc">${passedChecks} / ${totalChecks} checks passed ${overallIcon}</span>
+                    </div>
+                    <div class="urls-section">
+                        <div class="url-box">
+                            <h4>🔗 URLs found (${urlsFound.length})</h4>
+                            <ul class="url-list">
+                                ${urlsHtml || '<li style="color:#6b81ad;">none</li>'}
+                            </ul>
+                        </div>
+                        <div class="url-box">
+                            <h4>📦 Dependencies (${dependencies.length})</h4>
+                            <ul class="url-list">
+                                ${depsHtml || '<li style="color:#6b81ad;">none</li>'}
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin: 0.5rem 0 0.25rem; color:#bbd1ff;">🔬 Check details</div>
+                    <div class="checks-grid" id="checksGrid">
+                        ${checksHtml}
+                    </div>
+                    <div class="footnote">
+                        <span>BT‑Analysis scan · ${new Date().toLocaleString()}</span>
+                        <span style="display: flex; align-items: center;">${overallIcon} ${passed ? 'Clean verdict' : 'Suspicious'}</span>
+                    </div>
+                `;
+
+                resultArea.innerHTML = resultHtml;
+            }
+
+            function escapeHtml(unsafe) {
+                return unsafe.replace(/[&<>"']/g, function(m) {
+                    if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;';
+                    if(m === '"') return '&quot;'; return '&#039;';
+                });
+            }
+
+            checkBtn.addEventListener('click', submitScript);
+
+            renderInputPanel();
+        })();
+    </script>
+</body>
+</html>
